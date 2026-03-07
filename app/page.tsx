@@ -3,7 +3,7 @@
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { Calendar, ArrowRight, Video, Clock, CheckCircle2 } from "lucide-react";
+import { Calendar, ArrowRight, Video, Clock, CheckCircle2, CalendarCheck } from "lucide-react";
 
 export default function Home() {
   const { data: session, status } = useSession();

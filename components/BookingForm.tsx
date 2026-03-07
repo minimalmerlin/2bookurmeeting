@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { format, addDays, startOfToday, isSameDay } from "date-fns";
+import { format, addDays, startOfToday, isSameDay, addMinutes } from "date-fns";
 import { Loader2, ArrowRight, CheckCircle2 } from "lucide-react";
 
 type BookingFormProps = {

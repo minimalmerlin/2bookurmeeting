@@ -29,6 +29,7 @@ export async function POST(req: Request) {
 
         const event = await calendar.events.insert({
             calendarId: "primary",
+            sendUpdates: "all",
             requestBody: {
                 summary: `${eventType.title} with ${name}`,
                 description: `Event booked via CalendlyClone.\n\nAttendee Name: ${name}\nAttendee Email: ${email}\n\n${eventType.description || ""}`,

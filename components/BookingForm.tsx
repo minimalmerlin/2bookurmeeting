@@ -83,6 +83,12 @@ export function BookingForm({ eventType, user }: BookingFormProps) {
     };
 
     if (isSuccess) {
+        // Generate Google Calendar Add Link
+        const startParams = selectedTime ? new Date(selectedTime).toISOString().replace(/-|:|\.\d\d\d/g, "") : "";
+        const endParams = selectedTime ? addMinutes(new Date(selectedTime), eventType.duration).toISOString().replace(/-|:|\.\d\d\d/g, "") : "";
+
+        const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(`${eventType.title} with ${user.name}`)}&dates=${startParams}/${endParams}&details=${encodeURIComponent(eventType.description || "")}`;
+
         return (
             <div className="h-full flex flex-col items-center justify-center text-center animate-fade-in p-8 delay-100">
                 <div className="w-20 h-20 rounded-full bg-success-color/20 text-success-color flex items-center justify-center mb-6">
@@ -90,6 +96,16 @@ export function BookingForm({ eventType, user }: BookingFormProps) {
                 </div>
                 <h2 className="text-3xl font-bold text-white mb-4">You are scheduled</h2>
                 <p className="text-gray-400 mb-2">A calendar invitation has been sent to your email address.</p>
+
+                <a
+                    href={googleCalendarUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-4 px-6 py-3 bg-[#ffffff10] hover:bg-[#ffffff20] border border-[#ffffff20] text-white rounded-xl font-medium transition-all flex items-center gap-2"
+                >
+                    Add to Google Calendar
+                </a>
+
                 <div className="mt-8 p-6 glass-panel w-full border border-success-color/30 rounded-xl">
                     <p className="text-white font-semibold mb-1">{eventType.title} with {user.name}</p>
                     <p className="text-gray-400">{selectedTime ? format(new Date(selectedTime), "EEEE, MMMM d, yyyy 'at' h:mm a") : ""}</p>

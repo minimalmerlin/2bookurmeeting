@@ -2,7 +2,7 @@ import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { Calendar, Settings, LogOut } from "lucide-react";
+import { Calendar, Settings, LogOut, Clock } from "lucide-react";
 
 export default async function DashboardLayout({
     children,
@@ -30,6 +30,10 @@ export default async function DashboardLayout({
                     <Link href="/dashboard" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#ffffff0a] transition-colors text-sm font-medium text-gray-300 hover:text-white">
                         <Calendar size={18} />
                         Event Types
+                    </Link>
+                    <Link href="/dashboard/availability" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#ffffff0a] transition-colors text-sm font-medium text-gray-300 hover:text-white">
+                        <Clock size={18} />
+                        Availability
                     </Link>
                     <Link href="/dashboard/settings" className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#ffffff0a] transition-colors text-sm font-medium text-gray-300 hover:text-white">
                         <Settings size={18} />

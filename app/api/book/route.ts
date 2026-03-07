@@ -30,14 +30,26 @@ export async function POST(req: Request) {
         const event = await calendar.events.insert({
             calendarId: "primary",
             sendUpdates: "all",
+            conferenceDataVersion: 1, // Required to create a conference
             requestBody: {
                 summary: `${eventType.title} with ${name}`,
                 description: `Event booked via CalendlyClone.\n\nAttendee Name: ${name}\nAttendee Email: ${email}\n\n${eventType.description || ""}`,
                 start: { dateTime: start.toISOString() },
                 end: { dateTime: end.toISOString() },
                 attendees: [{ email }],
+                conferenceData: {
+                    createRequest: {
+                        requestId: Math.random().toString(36).substring(7), // Random short string
+                        conferenceSolutionKey: {
+                            type: "hangoutsMeet"
+                        }
+                    }
+                }
             },
         });
+
+        // Extract meet link if available
+        const meetLink = event.data.hangoutLink || null;
 
         // 2. Save Booking to Database
         const booking = await prisma.booking.create({
@@ -52,7 +64,7 @@ export async function POST(req: Request) {
             }
         });
 
-        return NextResponse.json(booking);
+        return NextResponse.json({ ...booking, meetLink });
     } catch (error) {
         console.error("[BOOK_POST]", error);
         return new NextResponse("Internal Error", { status: 500 });

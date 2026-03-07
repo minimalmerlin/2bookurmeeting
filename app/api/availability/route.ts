@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getGoogleCalendarClient } from "@/lib/google";
-import { addMinutes, isBefore, isSameDay, parseISO, setHours, setMinutes, startOfDay, endOfDay } from "date-fns";
+import { addMinutes, isBefore, parseISO, setHours, setMinutes, startOfDay, endOfDay, getDay } from "date-fns";
+import { prisma } from "@/lib/prisma";
 
 export async function GET(req: Request) {
     try {
@@ -22,9 +23,38 @@ export async function GET(req: Request) {
 
         const calendar = await getGoogleCalendarClient(userId);
 
-        // Default working hours: 09:00 to 17:00 local time (simplify for MVP)
-        const dayStart = setMinutes(setHours(selectedDate, 9), 0);
-        const dayEnd = setMinutes(setHours(selectedDate, 17), 0);
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: { workingHours: true }
+        });
+
+        if (!user) {
+            return new NextResponse("User not found", { status: 404 });
+        }
+
+        const defaultHours = [
+            { day: 1, start: "09:00", end: "17:00" },
+            { day: 2, start: "09:00", end: "17:00" },
+            { day: 3, start: "09:00", end: "17:00" },
+            { day: 4, start: "09:00", end: "17:00" },
+            { day: 5, start: "09:00", end: "17:00" }
+        ];
+
+        const workingHours = user.workingHours ? JSON.parse(user.workingHours) : defaultHours;
+        const currentDayOfWeek = getDay(selectedDate); // 0 = Sunday, 1 = Monday...
+
+        const daySchedule = workingHours.find((h: any) => h.day === currentDayOfWeek);
+
+        // If no schedule for this day, return empty slots
+        if (!daySchedule || !daySchedule.start || !daySchedule.end) {
+            return NextResponse.json([]);
+        }
+
+        const [startHour, startMin] = daySchedule.start.split(":").map(Number);
+        const [endHour, endMin] = daySchedule.end.split(":").map(Number);
+
+        const dayStart = setMinutes(setHours(selectedDate, startHour), startMin);
+        const dayEnd = setMinutes(setHours(selectedDate, endHour), endMin);
 
         // Convert to ISO strings for Google API
         const timeMin = startOfDay(selectedDate).toISOString();

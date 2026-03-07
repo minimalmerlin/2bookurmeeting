@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { format, addDays, startOfToday, isSameDay, addMinutes } from "date-fns";
-import { Loader2, ArrowRight, CheckCircle2 } from "lucide-react";
+import { Loader2, ArrowRight, CheckCircle2, Video } from "lucide-react";
 
 type BookingFormProps = {
     eventType: any,
@@ -23,6 +23,7 @@ export function BookingForm({ eventType, user }: BookingFormProps) {
 
     // Success state
     const [isSuccess, setIsSuccess] = useState(false);
+    const [meetLink, setMeetLink] = useState<string | null>(null);
 
     // Generate next 14 days for selection
     const days = Array.from({ length: 14 }).map((_, i) => addDays(startOfToday(), i));
@@ -72,6 +73,10 @@ export function BookingForm({ eventType, user }: BookingFormProps) {
             });
 
             if (res.ok) {
+                const data = await res.json();
+                if (data.meetLink) {
+                    setMeetLink(data.meetLink);
+                }
                 setIsSuccess(true);
             } else {
                 alert("Failed to confirm booking. The time may have been taken.");
@@ -97,14 +102,28 @@ export function BookingForm({ eventType, user }: BookingFormProps) {
                 <h2 className="text-3xl font-bold text-white mb-4">You are scheduled</h2>
                 <p className="text-gray-400 mb-2">A calendar invitation has been sent to your email address.</p>
 
-                <a
-                    href={googleCalendarUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="mt-4 px-6 py-3 bg-[#ffffff10] hover:bg-[#ffffff20] border border-[#ffffff20] text-white rounded-xl font-medium transition-all flex items-center gap-2"
-                >
-                    Add to Google Calendar
-                </a>
+                <div className="flex flex-col sm:flex-row items-center gap-4 mt-4 w-full max-w-md mx-auto justify-center">
+                    <a
+                        href={googleCalendarUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-5 py-3 bg-[#ffffff10] hover:bg-[#ffffff20] border border-[#ffffff20] text-white rounded-xl font-medium transition-all flex items-center justify-center gap-2 flex-1 w-full"
+                    >
+                        Add to Calendar
+                    </a>
+
+                    {meetLink && (
+                        <a
+                            href={meetLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-5 py-3 bg-primary-color hover:bg-primary-color/90 text-white rounded-xl font-medium transition-all flex items-center justify-center gap-2 flex-1 shadow-[0_0_15px_rgba(255,255,255,0.1)] w-full"
+                        >
+                            <Video size={18} />
+                            Google Meet
+                        </a>
+                    )}
+                </div>
 
                 <div className="mt-8 p-6 glass-panel w-full border border-success-color/30 rounded-xl">
                     <p className="text-white font-semibold mb-1">{eventType.title} with {user.name}</p>

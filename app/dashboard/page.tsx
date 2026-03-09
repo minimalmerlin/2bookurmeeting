@@ -12,7 +12,13 @@ export default async function DashboardPage() {
 
     const user = await prisma.user.findUnique({
         where: { id: session.user.id },
-        include: { eventTypes: true }
+        include: {
+            eventTypes: {
+                include: {
+                    _count: { select: { bookings: true } }
+                }
+            }
+        }
     });
 
     const username = user?.username;

@@ -9,7 +9,7 @@ export async function POST(req: Request) {
         if (!session?.user?.id) return new NextResponse("Unauthorized", { status: 401 });
 
         const body = await req.json();
-        const { title, description, duration, slug } = body;
+        const { title, description, duration, slug, customQuestions } = body;
 
         // Validate inputs
         if (!title || !duration || !slug) {
@@ -33,6 +33,7 @@ export async function POST(req: Request) {
                 description,
                 duration: parseInt(duration),
                 slug,
+                customQuestions,
                 userId: session.user.id
             }
         });

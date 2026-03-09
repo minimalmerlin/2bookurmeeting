@@ -17,6 +17,10 @@ export function EventTypeCard({ eventType, username, baseUrl }: Props) {
     const publicUrl = username ? `${baseUrl}/${username}/${eventType.slug}` : "";
     const embedUrl = username ? `${baseUrl}/embed/${username}/${eventType.slug}` : "";
 
+    const views = eventType.pageViews || 0;
+    const bookings = eventType._count?.bookings || 0;
+    const conversion = views > 0 ? Math.round((bookings / views) * 100) : 0;
+
     const embedCode = `<iframe src="${embedUrl}" width="100%" height="800" frameborder="0"></iframe>`;
 
     const copyLink = () => {
@@ -74,6 +78,14 @@ export function EventTypeCard({ eventType, username, baseUrl }: Props) {
                 ) : (
                     <span className="text-xs text-gray-500">Username required</span>
                 )}
+            </div>
+
+            <div className="pt-4 mt-2 border-t border-[#ffffff10] flex items-center justify-between text-xs text-gray-500 z-10">
+                <div className="flex gap-4">
+                    <span title="Page Views" className="font-mono">{views} Views</span>
+                    <span title="Bookings" className="font-mono">{bookings} Bookings</span>
+                </div>
+                <div className="font-mono font-medium text-gray-400">{conversion}% Conv.</div>
             </div>
         </div>
     );

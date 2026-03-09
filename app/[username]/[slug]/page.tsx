@@ -26,6 +26,12 @@ export default async function BookingPage({ params }: Props) {
 
     if (!eventType) return notFound();
 
+    // Increment page views asynchronously without blocking the render
+    prisma.eventType.update({
+        where: { id: eventType.id },
+        data: { pageViews: { increment: 1 } }
+    }).catch(console.error);
+
     return (
         <main className="min-h-screen py-10 px-4 flex items-center justify-center bg-[#0f172a] relative overflow-hidden">
             {/* Background decoration elements */}

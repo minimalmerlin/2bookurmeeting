@@ -6,7 +6,7 @@ import { addMinutes } from "date-fns";
 export async function POST(req: Request) {
     try {
         const body = await req.json();
-        const { eventTypeId, name, email, startTime } = body;
+        const { eventTypeId, name, email, startTime, customAnswers } = body;
 
         if (!eventTypeId || !name || !email || !startTime) {
             return new NextResponse("Missing required fields", { status: 400 });
@@ -24,6 +24,19 @@ export async function POST(req: Request) {
         const start = new Date(startTime);
         const end = addMinutes(start, eventType.duration);
 
+        // Parse custom answers for description
+        let answersText = "";
+        try {
+            if (customAnswers) {
+                const parsed = JSON.parse(customAnswers);
+                if (Array.isArray(parsed) && parsed.length > 0) {
+                    answersText = "\n\n--- Qualification Answers ---\n" + parsed.map((a: any) => `Q: ${a.question}\nA: ${a.answer}`).join("\n\n");
+                }
+            }
+        } catch (e) {
+            console.error(e);
+        }
+
         // 1. Create Google Calendar Event
         const calendar = await getGoogleCalendarClient(eventType.userId);
 
@@ -33,7 +46,7 @@ export async function POST(req: Request) {
             conferenceDataVersion: 1, // Required to create a conference
             requestBody: {
                 summary: `${eventType.title} with ${name}`,
-                description: `Event booked via CalendlyClone.\n\nAttendee Name: ${name}\nAttendee Email: ${email}\n\n${eventType.description || ""}`,
+                description: `Event booked via CalendlyClone.\n\nAttendee Name: ${name}\nAttendee Email: ${email}\n\n${eventType.description || ""}${answersText}`,
                 start: { dateTime: start.toISOString() },
                 end: { dateTime: end.toISOString() },
                 attendees: [{ email }],
@@ -61,6 +74,7 @@ export async function POST(req: Request) {
                 startTime: start,
                 endTime: end,
                 googleEventId: event.data.id,
+                customAnswers: customAnswers || null,
             }
         });
 

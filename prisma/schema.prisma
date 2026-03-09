@@ -61,34 +61,37 @@ model VerificationToken {
 
 // Calendly Clone Custom Models
 model EventType {
-  id          String    @id @default(cuid())
-  title       String
-  description String?
-  duration    Int       // duration in minutes
-  slug        String
+  id              String    @id @default(cuid())
+  title           String
+  description     String?
+  duration        Int       // duration in minutes
+  slug            String
+  customQuestions String?   // JSON string storing an array of custom questions
+  pageViews       Int       @default(0)
   
-  userId      String
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   
-  bookings    Booking[]
+  bookings        Booking[]
 
   @@unique([userId, slug])
 }
 
 model Booking {
-  id            String    @id @default(cuid())
-  eventTypeId   String
-  eventType     EventType @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
+  id              String    @id @default(cuid())
+  eventTypeId     String
+  eventType       EventType @relation(fields: [eventTypeId], references: [id], onDelete: Cascade)
   
-  userId        String    // Quick ref to owner
-  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String    // Quick ref to owner
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   
-  attendeeName  String
-  attendeeEmail String
+  attendeeName    String
+  attendeeEmail   String
+  customAnswers   String?   // JSON string storing the answers to the custom questions
   
-  startTime     DateTime
-  endTime       DateTime
-  googleEventId String?
+  startTime       DateTime
+  endTime         DateTime
+  googleEventId   String?
 
-  createdAt     DateTime  @default(now())
+  createdAt       DateTime  @default(now())
 }

@@ -19,7 +19,23 @@ export function BookingForm({ eventType, user }: BookingFormProps) {
     const [showCheckout, setShowCheckout] = useState(false);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [customAnswers, setCustomAnswers] = useState<string[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
+
+    // Parse custom questions
+    const [parsedQuestions, setParsedQuestions] = useState<string[]>([]);
+
+    useEffect(() => {
+        try {
+            if (eventType.customQuestions) {
+                const q = JSON.parse(eventType.customQuestions);
+                setParsedQuestions(q);
+                setCustomAnswers(new Array(q.length).fill(""));
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }, [eventType.customQuestions]);
 
     // Success state
     const [isSuccess, setIsSuccess] = useState(false);
@@ -61,6 +77,11 @@ export function BookingForm({ eventType, user }: BookingFormProps) {
 
         setIsSubmitting(true);
         try {
+            const formattedAnswers = parsedQuestions.map((q, i) => ({
+                question: q,
+                answer: customAnswers[i]
+            }));
+
             const res = await fetch("/api/book", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -69,6 +90,7 @@ export function BookingForm({ eventType, user }: BookingFormProps) {
                     name,
                     email,
                     startTime: selectedTime,
+                    customAnswers: JSON.stringify(formattedAnswers),
                 }),
             });
 
@@ -164,7 +186,7 @@ export function BookingForm({ eventType, user }: BookingFormProps) {
                     </div>
 
                     <div className="space-y-2">
-                        <label htmlFor="email" className="block text-sm font-medium text-gray-300">Email Format</label>
+                        <label htmlFor="email" className="block text-sm font-medium text-gray-300">Email Address</label>
                         <input
                             id="email"
                             type="email"
@@ -175,6 +197,31 @@ export function BookingForm({ eventType, user }: BookingFormProps) {
                             placeholder="you@example.com"
                         />
                     </div>
+
+                    {parsedQuestions.length > 0 && (
+                        <div className="pt-4 border-t border-[#ffffff10] space-y-6">
+                            <h3 className="font-medium text-white mb-2">Additional Information</h3>
+                            {parsedQuestions.map((q, i) => (
+                                <div key={i} className="space-y-2">
+                                    <label className="block text-sm font-medium text-gray-300">
+                                        {q} <span className="text-danger-color">*</span>
+                                    </label>
+                                    <textarea
+                                        required
+                                        value={customAnswers[i] || ""}
+                                        onChange={e => {
+                                            const newA = [...customAnswers];
+                                            newA[i] = e.target.value;
+                                            setCustomAnswers(newA);
+                                        }}
+                                        className="input-field resize-none"
+                                        rows={2}
+                                        placeholder="Your answer..."
+                                    />
+                                </div>
+                            ))}
+                        </div>
+                    )}
 
                     <button
                         type="submit"

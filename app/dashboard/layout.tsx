@@ -16,7 +16,7 @@ export default async function DashboardLayout({
     }
 
     return (
-        <div className="flex h-screen bg-[#0f172a]">
+        <div className="flex h-screen bg-black dashboard-theme">
             {/* Sidebar */}
             <aside className="w-64 glass-panel border-r border-[#ffffff10] flex flex-col m-4 mr-0">
                 <div className="p-6 border-b border-[#ffffff10]">

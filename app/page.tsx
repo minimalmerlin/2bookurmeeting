@@ -79,13 +79,13 @@ export default function Home() {
             </a>
           </div>
         )}
-        <p className="text-sm text-gray-400 mt-6 flex items-center justify-center gap-2 font-medium">
+        <div className="text-sm text-gray-400 mt-6 flex items-center justify-center gap-2 font-medium">
           <CheckCircle2 size={16} className="text-green-500" /> 100% Kostenlos
           <div className="w-1 h-1 rounded-full bg-gray-300 mx-1"></div>
           Zero Tracking
           <div className="w-1 h-1 rounded-full bg-gray-300 mx-1"></div>
           Self-Hostbar (DSGVO-konform)
-        </p>
+        </div>
       </section>
 
       {/* Visual Flow Matrix - 3 Steps */}

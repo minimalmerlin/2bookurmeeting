@@ -12,6 +12,24 @@ export async function POST(req: Request) {
             return new NextResponse("Missing required fields", { status: 400 });
         }
 
+        // Server-side input validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            return new NextResponse("Invalid email address", { status: 400 });
+        }
+        if (typeof name !== "string" || name.trim().length < 2 || name.length > 100) {
+            return new NextResponse("Invalid name", { status: 400 });
+        }
+
+        // Prevent bookings in the past
+        const start = new Date(startTime);
+        if (isNaN(start.getTime())) {
+            return new NextResponse("Invalid start time", { status: 400 });
+        }
+        if (start < new Date()) {
+            return new NextResponse("Cannot book a time in the past", { status: 400 });
+        }
+
         const eventType = await prisma.eventType.findUnique({
             where: { id: eventTypeId },
             include: { user: true }
@@ -21,7 +39,6 @@ export async function POST(req: Request) {
             return new NextResponse("Event type not found", { status: 404 });
         }
 
-        const start = new Date(startTime);
         const end = addMinutes(start, eventType.duration);
 
         // Parse custom answers for description

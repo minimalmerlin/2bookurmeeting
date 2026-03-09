@@ -16,6 +16,16 @@ export async function POST(req: Request) {
             return new NextResponse("Missing required fields", { status: 400 });
         }
 
+        const parsedDuration = parseInt(duration);
+        if (isNaN(parsedDuration) || parsedDuration < 5 || parsedDuration > 480) {
+            return new NextResponse("Duration must be between 5 and 480 minutes", { status: 400 });
+        }
+
+        const slugRegex = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+        if (!slugRegex.test(slug) || slug.length > 60) {
+            return new NextResponse("Slug must be lowercase, alphanumeric with hyphens only (e.g. 'my-meeting')", { status: 400 });
+        }
+
         // Check slug uniqueness for this user
         const existing = await prisma.eventType.findUnique({
             where: {
@@ -31,7 +41,7 @@ export async function POST(req: Request) {
             data: {
                 title,
                 description,
-                duration: parseInt(duration),
+                duration: parsedDuration,
                 slug,
                 customQuestions,
                 userId: session.user.id

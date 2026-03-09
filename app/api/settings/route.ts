@@ -15,10 +15,16 @@ export async function PATCH(req: Request) {
             return new NextResponse("Username missing", { status: 400 });
         }
 
-        // Ensure alphanumeric and dashes only
+        // Ensure alphanumeric and dashes only, min 3 chars, max 30
         const validUsername = /^[a-zA-Z0-9-]+$/.test(username);
-        if (!validUsername) {
-            return new NextResponse("Invalid username format. Only alphanumeric and dashes allowed.", { status: 400 });
+        if (!validUsername || username.length < 3 || username.length > 30) {
+            return new NextResponse("Invalid username format. Only alphanumeric and dashes allowed (3-30 chars).", { status: 400 });
+        }
+
+        // Block reserved route names
+        const reserved = ["dashboard", "api", "auth", "admin", "impressum", "datenschutz", "nutzungsbedingungen", "embed", "settings", "login", "logout", "register"];
+        if (reserved.includes(username.toLowerCase())) {
+            return new NextResponse("This username is reserved and cannot be used.", { status: 400 });
         }
 
         // Check if username is taken globally
@@ -29,8 +35,15 @@ export async function PATCH(req: Request) {
 
         // Validate webhook URL if provided
         let finalWebhookUrl = webhookUrl;
-        if (finalWebhookUrl && !finalWebhookUrl.startsWith("http")) {
-            return new NextResponse("Invalid webhook URL. Must start with http or https.", { status: 400 });
+        if (finalWebhookUrl) {
+            try {
+                const parsed = new URL(finalWebhookUrl);
+                if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+                    throw new Error("Invalid protocol");
+                }
+            } catch {
+                return new NextResponse("Invalid webhook URL. Must be a valid http or https URL.", { status: 400 });
+            }
         }
 
         const updated = await prisma.user.update({

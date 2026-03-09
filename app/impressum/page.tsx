@@ -13,28 +13,27 @@ export default function Impressum() {
 
                 <div className="prose prose-gray dark:prose-invert max-w-none">
                     <p className="text-gray-500 dark:text-gray-400 mb-8">
-                        Angaben gemäß § 5 TMG. <br />
-                        (Platzhalter für deine echten Daten, wenn du das Projekt gewerblich betreibst)
+                        Angaben gemäß § 5 TMG.
                     </p>
 
                     <h2 className="text-xl font-semibold mt-8 mb-4">Seitenbetreiber</h2>
                     <p>
-                        Max Mustermann<br />
-                        Musterstraße 1<br />
-                        12345 Musterstadt
+                        Merlin Mechler<br />
+                        Hirzerweg 8<br />
+                        12107 Berlin
                     </p>
 
                     <h2 className="text-xl font-semibold mt-8 mb-4">Kontakt</h2>
                     <p>
-                        E-Mail: kontakt@deinedomain.de<br />
-                        Telefon: +49 (0) 123 44 55 66
+                        E-Mail: merlin@merlinmechler.de<br />
+                        Telefon: 0177 8197928
                     </p>
 
                     <h2 className="text-xl font-semibold mt-8 mb-4">Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
                     <p>
-                        Max Mustermann<br />
-                        Musterstraße 1<br />
-                        12345 Musterstadt
+                        Merlin Mechler<br />
+                        Hirzerweg 8<br />
+                        12107 Berlin
                     </p>
 
                     <h2 className="text-xl font-semibold mt-10 mb-4">Haftung für Inhalte</h2>

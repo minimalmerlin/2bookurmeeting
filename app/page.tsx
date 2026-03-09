@@ -84,7 +84,7 @@ export default function Home() {
           <div className="w-1 h-1 rounded-full bg-gray-300 mx-1"></div>
           Zero Tracking
           <div className="w-1 h-1 rounded-full bg-gray-300 mx-1"></div>
-          DSGVO-ready
+          Self-Hostbar (DSGVO-konform)
         </p>
       </section>
 
@@ -149,7 +149,7 @@ export default function Home() {
               </div>
               <h3 className="font-semibold text-xl mb-3">Tech & Trust (OSS)</h3>
               <p className="text-gray-500 dark:text-gray-400 leading-relaxed text-sm">
-                Open Source. Kein 3rd-Party Tracking, keine invasiven Cookies. Klar definierte DSGVO-Story. Deine Daten gehören dir und liegen nur bei Google Calendar.
+                Open Source. Kein 3rd-Party Tracking, keine invasiven Cookies. Hoste es selbst auf einem deutschen Server (z.B. Hetzner) für 100% DSGVO-Konformität, oder nutze Vercel für den schnellen Start.
               </p>
             </div>
           </div>

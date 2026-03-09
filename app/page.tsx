@@ -2,6 +2,7 @@
 
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { useEffect } from "react";
 import { Calendar, ArrowRight, CheckCircle2, Sparkles, Filter, ShieldCheck, Link as LinkIcon, Check, X } from "lucide-react";
 

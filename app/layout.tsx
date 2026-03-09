@@ -3,8 +3,8 @@ import "./globals.css";
 import { Providers } from "@/components/Providers";
 
 export const metadata: Metadata = {
-  title: "Calendly Clone",
-  description: "A premium Calendly clone built with Next.js",
+  title: "2BookUrMeetings",
+  description: "Der kostenlose, Open-Source Termin-Link für Creator & Freelancer",
 };
 
 export default function RootLayout({

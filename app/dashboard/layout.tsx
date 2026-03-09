@@ -20,10 +20,12 @@ export default async function DashboardLayout({
             {/* Sidebar */}
             <aside className="w-64 glass-panel border-r border-[#ffffff10] flex flex-col m-4 mr-0">
                 <div className="p-6 border-b border-[#ffffff10]">
-                    <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
-                        <Calendar className="text-primary-color" />
-                        CalendlyClone
-                    </h2>
+                    <div className="flex items-center gap-2 px-2 text-white font-semibold whitespace-nowrap overflow-hidden">
+                        <div className="bg-white text-black p-1 rounded-md shrink-0">
+                            <Calendar size={16} />
+                        </div>
+                        2BookUrMeetings
+                    </div>
                 </div>
 
                 <nav className="flex-1 p-4 space-y-2">

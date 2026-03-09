@@ -41,9 +41,9 @@ export function SettingsForm({ initialUsername }: { initialUsername: string }) {
         <form onSubmit={onSubmit} className="space-y-6">
             <div className="space-y-2">
                 <label htmlFor="username" className="block text-sm font-medium text-gray-300">Public Username</label>
-                <div className="relative">
-                    <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                        <span className="text-gray-500 text-sm font-medium">calendlyclone.com/</span>
+                <div className="relative flex rounded-md shadow-sm">
+                    <div className="flex-1 bg-gray-50 border border-r-0 dark:border-gray-700 dark:bg-gray-800 p-2 sm:p-2.5 rounded-l-md flex items-center">
+                        <span className="text-gray-500 text-sm font-medium">2bookurmeetings.vercel.app/</span>
                     </div>
                     <input
                         id="username"

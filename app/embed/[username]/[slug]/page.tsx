@@ -29,7 +29,7 @@ export default async function EmbedBookingPage({ params }: Props) {
             <div className="mb-8 border-b border-[#ffffff10] pb-6">
                 <p className="text-gray-400 font-medium mb-1">{user.name}</p>
                 <h1 className="text-2xl font-bold text-white mb-2">{eventType.title}</h1>
-                <p className="text-sm text-gray-300">{eventType.duration} minutes • Powered by CalendlyClone</p>
+                <p className="text-sm text-gray-300">{eventType.duration} minutes • Powered by 2BookUrMeetings</p>
             </div>
             <BookingForm eventType={eventType} user={user} />
         </div>

@@ -46,7 +46,7 @@ export async function POST(req: Request) {
             conferenceDataVersion: 1, // Required to create a conference
             requestBody: {
                 summary: `${eventType.title} with ${name}`,
-                description: `Event booked via CalendlyClone.\n\nAttendee Name: ${name}\nAttendee Email: ${email}\n\n${eventType.description || ""}${answersText}`,
+                description: `Event booked via 2BookUrMeetings.\n\nAttendee Name: ${name}\nAttendee Email: ${email}\n\n${eventType.description || ""}${answersText}`,
                 start: { dateTime: start.toISOString() },
                 end: { dateTime: end.toISOString() },
                 attendees: [{ email }],

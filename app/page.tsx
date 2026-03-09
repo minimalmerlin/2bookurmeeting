@@ -3,7 +3,7 @@
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { Calendar, ArrowRight, Video, Clock, CheckCircle2, CalendarCheck } from "lucide-react";
+import { Calendar, ArrowRight, Video, Clock, CheckCircle2, CalendarCheck, Sparkles } from "lucide-react";
 
 export default function Home() {
   const { data: session, status } = useSession();
@@ -39,17 +39,17 @@ export default function Home() {
       {/* Hero Section: Apple/Notion Hybrid */}
       <section className="w-full flex-1 flex flex-col items-center pt-24 pb-16 px-6 z-10 animate-fade-in max-w-5xl mx-auto text-center">
         <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 dark:bg-gray-800 mb-8 text-sm font-medium border border-gray-200 dark:border-gray-700">
-          <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
-          Version 2.0 is live
+          <Sparkles size={14} className="text-amber-500" />
+          The scheduling layer for independents
         </div>
 
         <h1 className="text-6xl md:text-8xl font-bold tracking-tighter mb-6 text-balance leading-[1.1]">
-          Your schedule, <br className="hidden md:block" />
-          <span className="text-gray-400">beautifully booked.</span>
+          More deep work. <br className="hidden md:block" />
+          <span className="text-gray-400">Zero scheduling friction.</span>
         </h1>
 
         <p className="text-xl md:text-2xl text-gray-500 dark:text-gray-400 mb-10 max-w-2xl mx-auto leading-relaxed font-normal">
-          A scheduling tool so simple it feels like magic. Connect your Google Calendar, set your hours, and share your link. No friction, just meetings.
+          Built specifically for creators, freelancers, and solo-entrepreneurs. Protect your time, look professional, and let clients book you seamlessly.
         </p>
 
         {status === "loading" ? (
@@ -129,8 +129,8 @@ export default function Home() {
       {/* Feature Grid (Notion block style) */}
       <section id="how-it-works" className="w-full max-w-5xl mx-auto px-6 py-20 border-t border-gray-100 dark:border-gray-800">
         <div className="mb-16">
-          <h2 className="text-4xl font-bold tracking-tight mb-4">Everything you need. <br className="sm:hidden" /><span className="text-gray-400">Nothing you don't.</span></h2>
-          <p className="text-xl text-gray-500">We cut the bloat so you can focus on the meeting, not the setup.</p>
+          <h2 className="text-4xl font-bold tracking-tight mb-4">Run your solo-business <br className="sm:hidden" /><span className="text-gray-400">like a pro.</span></h2>
+          <p className="text-xl text-gray-500">Everything you need to manage your clients without the enterprise bloat.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -139,9 +139,9 @@ export default function Home() {
             <div className="w-10 h-10 bg-white dark:bg-black border border-gray-200 dark:border-gray-700 rounded-lg flex items-center justify-center mb-6 shadow-sm">
               <CalendarCheck size={20} className="text-black dark:text-white" />
             </div>
-            <h3 className="font-semibold text-lg mb-2">Google Native</h3>
+            <h3 className="font-semibold text-lg mb-2">Double-Booking Proof</h3>
             <p className="text-gray-500 leading-relaxed text-sm">
-              Deeply integrated with Google Calendar. We check your conflicts in real-time. No double bookings.
+              Deeply integrated with your calendar. We check conflicts in real-time so you never overlap a client call with personal time.
             </p>
           </div>
 
@@ -150,9 +150,9 @@ export default function Home() {
             <div className="w-10 h-10 bg-white dark:bg-black border border-gray-200 dark:border-gray-700 rounded-lg flex items-center justify-center mb-6 shadow-sm">
               <Video size={20} className="text-black dark:text-white" />
             </div>
-            <h3 className="font-semibold text-lg mb-2">Auto-Meet Links</h3>
+            <h3 className="font-semibold text-lg mb-2">Automatic Video Links</h3>
             <p className="text-gray-500 leading-relaxed text-sm">
-              Every booking automatically generates a secure Google Meet link and attaches it to the calendar invite.
+              Look professional instantly. Every booking automatically generates a secure meeting link and attaches it to the invite.
             </p>
           </div>
 
@@ -161,9 +161,9 @@ export default function Home() {
             <div className="w-10 h-10 bg-white dark:bg-black border border-gray-200 dark:border-gray-700 rounded-lg flex items-center justify-center mb-6 shadow-sm">
               <Clock size={20} className="text-black dark:text-white" />
             </div>
-            <h3 className="font-semibold text-lg mb-2">Total Control</h3>
+            <h3 className="font-semibold text-lg mb-2">Protect Deep Work</h3>
             <p className="text-gray-500 leading-relaxed text-sm">
-              Set your exact working hours. Decide exactly when you are available, day by day.
+              Set rigid boundaries. Decide exactly which hours you take calls, and keep the rest of your week open for focused creation.
             </p>
           </div>
         </div>

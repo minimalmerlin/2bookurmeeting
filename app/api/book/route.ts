@@ -78,6 +78,32 @@ export async function POST(req: Request) {
             }
         });
 
+        // 3. Trigger Webhook asynchronously if configured
+        if (eventType.user.webhookUrl) {
+            try {
+                const webhookPayload = {
+                    event: "meeting.booked",
+                    eventTypeId: eventType.id,
+                    eventTitle: eventType.title,
+                    attendeeName: name,
+                    attendeeEmail: email,
+                    startTime: start.toISOString(),
+                    endTime: end.toISOString(),
+                    meetLink: meetLink,
+                    qualificationAnswers: customAnswers ? JSON.parse(customAnswers) : []
+                };
+
+                // Fire and forget
+                fetch(eventType.user.webhookUrl, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(webhookPayload)
+                }).catch(err => console.error("[WEBHOOK_ERROR]", err));
+            } catch (err) {
+                console.error("[WEBHOOK_PREP_ERROR]", err);
+            }
+        }
+
         return NextResponse.json({ ...booking, meetLink });
     } catch (error) {
         console.error("[BOOK_POST]", error);

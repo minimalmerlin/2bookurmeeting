@@ -9,7 +9,7 @@ export async function PATCH(req: Request) {
         if (!session?.user?.id) return new NextResponse("Unauthorized", { status: 401 });
 
         const body = await req.json();
-        const { username } = body;
+        const { username, webhookUrl } = body;
 
         if (!username) {
             return new NextResponse("Username missing", { status: 400 });
@@ -27,9 +27,18 @@ export async function PATCH(req: Request) {
             return new NextResponse("Username already taken", { status: 400 });
         }
 
+        // Validate webhook URL if provided
+        let finalWebhookUrl = webhookUrl;
+        if (finalWebhookUrl && !finalWebhookUrl.startsWith("http")) {
+            return new NextResponse("Invalid webhook URL. Must start with http or https.", { status: 400 });
+        }
+
         const updated = await prisma.user.update({
             where: { id: session.user.id },
-            data: { username }
+            data: {
+                username,
+                webhookUrl: finalWebhookUrl || null
+            }
         });
 
         return NextResponse.json(updated);

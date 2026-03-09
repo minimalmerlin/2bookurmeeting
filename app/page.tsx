@@ -29,7 +29,7 @@ export default function Home() {
         {status === "unauthenticated" && (
           <button
             onClick={() => signIn("google", { callbackUrl: "/dashboard" })}
-            className="text-sm font-medium px-4 py-2 hover:bg-gray-100 rounded-md transition-colors dark:hover:bg-gray-800"
+            className="text-sm font-medium px-5 py-2.5 bg-black text-white dark:bg-white dark:text-black hover:scale-105 rounded-lg transition-transform shadow-md"
           >
             Google Login
           </button>

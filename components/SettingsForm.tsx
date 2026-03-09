@@ -2,11 +2,12 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2, User as UserIcon } from "lucide-react";
+import { Loader2, User as UserIcon, Webhook } from "lucide-react";
 
-export function SettingsForm({ initialUsername }: { initialUsername: string }) {
+export function SettingsForm({ initialUsername, initialWebhookUrl }: { initialUsername: string, initialWebhookUrl?: string | null }) {
     const router = useRouter();
     const [username, setUsername] = useState(initialUsername || "");
+    const [webhookUrl, setWebhookUrl] = useState(initialWebhookUrl || "");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
@@ -21,14 +22,14 @@ export function SettingsForm({ initialUsername }: { initialUsername: string }) {
             const res = await fetch("/api/settings", {
                 method: "PATCH",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username: username.toLowerCase() }),
+                body: JSON.stringify({ username: username.toLowerCase(), webhookUrl }),
             });
 
             if (!res.ok) {
                 throw new Error(await res.text() || "Something went wrong.");
             }
 
-            setSuccess("Username updated successfully.");
+            setSuccess("Settings updated successfully.");
             router.refresh();
         } catch (err: any) {
             setError(err.message);
@@ -38,7 +39,7 @@ export function SettingsForm({ initialUsername }: { initialUsername: string }) {
     }
 
     return (
-        <form onSubmit={onSubmit} className="space-y-6">
+        <form onSubmit={onSubmit} className="space-y-8">
             <div className="space-y-2">
                 <label htmlFor="username" className="block text-sm font-medium text-gray-300">Public Username</label>
                 <div className="relative flex rounded-md shadow-sm">
@@ -58,13 +59,32 @@ export function SettingsForm({ initialUsername }: { initialUsername: string }) {
                 <p className="text-xs text-gray-500">This will be your public URL to share with others.</p>
             </div>
 
+            <div className="space-y-2">
+                <label htmlFor="webhookUrl" className="flex items-center gap-2 text-sm font-medium text-gray-300">
+                    <Webhook size={16} className="text-amber-500" />
+                    Webhook URL (n8n/Zapier) <span className="text-gray-500 text-xs font-normal">Optional</span>
+                </label>
+                <div className="relative rounded-md shadow-sm">
+                    <input
+                        id="webhookUrl"
+                        name="webhookUrl"
+                        type="url"
+                        value={webhookUrl}
+                        onChange={(e) => setWebhookUrl(e.target.value)}
+                        className="input-field"
+                        placeholder="https://n8n.your-domain.com/webhook/..."
+                    />
+                </div>
+                <p className="text-xs text-gray-500">We will send a POST request to this URL every time a new meeting is booked. Includes all custom qualification answers.</p>
+            </div>
+
             {error && <p className="text-sm text-danger-color font-medium bg-red-500/10 p-3 rounded-md border border-red-500/20">{error}</p>}
             {success && <p className="text-sm text-success-color font-medium bg-green-500/10 p-3 rounded-md border border-green-500/20">{success}</p>}
 
             <div className="pt-4 border-t border-[#ffffff10] flex justify-end">
                 <button type="submit" disabled={loading} className="btn-primary">
                     {loading ? <Loader2 size={16} className="animate-spin mr-2" /> : <UserIcon size={16} className="mr-2" />}
-                    Save Profile
+                    Save Settings
                 </button>
             </div>
         </form>

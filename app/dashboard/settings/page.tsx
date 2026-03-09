@@ -20,8 +20,8 @@ export default async function SettingsPage() {
             </div>
 
             <div className="glass-panel p-8">
-                <h3 className="text-xl font-semibold text-white mb-6 pb-4 border-b border-[#ffffff10]">Personal Link</h3>
-                <SettingsForm initialUsername={user?.username || ""} />
+                <h3 className="text-xl font-semibold text-white mb-6 pb-4 border-b border-[#ffffff10]">General Settings</h3>
+                <SettingsForm initialUsername={user?.username || ""} initialWebhookUrl={user?.webhookUrl || ""} />
             </div>
 
             <div className="glass-panel p-8">

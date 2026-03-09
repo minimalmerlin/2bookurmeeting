@@ -246,8 +246,15 @@ export default function Home() {
       </section>
 
       {/* Minimal Footer */}
-      <footer className="w-full py-8 text-center text-sm text-gray-600 dark:text-gray-500 bg-gray-50 dark:bg-black border-t border-gray-200 dark:border-gray-900">
-        <p>© {new Date().getFullYear()} 2BookUrMeetings — Built for Solo-Entrepreneurs.</p>
+      <footer className="w-full py-12 text-center text-sm text-gray-600 dark:text-gray-500 bg-gray-50 dark:bg-black border-t border-gray-200 dark:border-gray-900">
+        <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p>© {new Date().getFullYear()} 2BookUrMeetings — Built for Solo-Entrepreneurs.</p>
+          <div className="flex items-center gap-6">
+            <Link href="/impressum" className="hover:text-black dark:hover:text-white transition-colors">Impressum</Link>
+            <Link href="/datenschutz" className="hover:text-black dark:hover:text-white transition-colors">Datenschutz</Link>
+            <Link href="/nutzungsbedingungen" className="hover:text-black dark:hover:text-white transition-colors">AGB</Link>
+          </div>
+        </div>
       </footer>
     </main>
   );
